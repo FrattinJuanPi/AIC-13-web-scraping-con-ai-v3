@@ -16,6 +16,9 @@ USER_AGENTS = [
 ]
 
 def get_random_headers():
+    """ Esta función setea los parámetros de conexión 
+    con headers aleatorios 
+    """
     return {
         "User-Agent": random.choice(USER_AGENTS),
         "Accept-Language": "es-ES,es;q=0.9,en;q=0.8",
@@ -25,35 +28,51 @@ def get_random_headers():
         "Referer": "https://www.google.com"
     }
 
-def download_html(url, wait_time=5):
-    headers = get_random_headers()
-    user_data_dir = tempfile.mkdtemp()
+# Descarga de  HTMLs 
+def download_htmls(urls, tiempo_espera=5):
+    """ Esta función descarga los HTMLs completos 
+    utilizando scraping dinámico con beatufoulsoup 
+    """
+    
+    html_dict = {}
 
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--disable-gpu")
-    options.add_argument("--no-sandbox")
-    options.add_argument(f"--user-data-dir={user_data_dir}")
-    options.add_argument(f"user-agent={headers['User-Agent']}")
+    for url in urls:
+        headers = get_random_headers()
+        user_data_dir = tempfile.mkdtemp()
 
-    try:
-        driver = webdriver.Chrome(options=options)
-        driver.get(url)
+        opciones = Options()
+        opciones.add_argument("--headless") 
+        opciones.add_argument("--disable-gpu")
+        opciones.add_argument("--no-sandbox")
+        opciones.add_argument(f"--user-data-dir={user_data_dir}")
+        opciones.add_argument(f"user-agent={headers['User-Agent']}")
 
-        WebDriverWait(driver, 15).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, "article, h2, h3, .headline, a[href]"))
-        )
+        try:
+            driver = webdriver.Chrome(options=opciones)
+            driver.get(url)
 
-        for _ in range(3):
-            driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)
+            WebDriverWait(driver, 15).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, "article, h2, h3, .headline, a[href]"))
+            )
 
-        time.sleep(wait_time)
+            # Scroll para cargar contenido dinámico, sirve para evitar bloqueos a bots
+            for _ in range(3):
+                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+                time.sleep(2)
 
-        html_content = driver.page_source
-        driver.quit()
-        return html_content
+            time.sleep(tiempo_espera)
 
-    except Exception as e:
-        print(f"Error processing {url}: {e}")
-        return None
+            html_completo = driver.page_source
+            dominio = url.split("//")[-1].split("/")[0].replace("www.", "")
+            html_dict[dominio] = html_completo
+
+            driver.save_screenshot(f"screenshot_{dominio}.png")
+            driver.quit()
+
+        except Exception as e:
+            print(f"Error procesando {url}: {e}")
+            continue
+
+    return html_dict
+ 
+    

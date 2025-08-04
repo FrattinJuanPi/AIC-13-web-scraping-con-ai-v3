@@ -2,5 +2,6 @@ venv/
 env/
 .venv/
 .python_env/
+.env
 
 01_Scraper_conIA_AZURE.py

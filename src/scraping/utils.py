@@ -1,3 +1,5 @@
+import random
+
 def get_random_headers():
     """Generates random headers to avoid detection during web scraping."""
     USER_AGENTS = [

@@ -31,3 +31,24 @@ class AzureStorage:
 
         with open(download_path, "wb") as download_file:
             download_file.write(file_client.download_file().readall())
+    
+    def save_json_to_abfss(cls, abfss_path, json_data, overwrite=True):
+        """
+        Guarda un string JSON en Azure Data Lake usando dbutils.fs.put.
+        """
+        try:
+            from pyspark.dbutils import DBUtils
+            from pyspark.sql import SparkSession
+            spark = SparkSession.builder.getOrCreate()
+            dbutils = DBUtils(spark)
+            dbutils.fs.put(abfss_path, json_data, overwrite)
+            print(f"Archivo JSON guardado en {abfss_path}")
+        except Exception as e:
+            print(f"Error guardando JSON en Azure Data Lake: {e}")
+            
+    def save_spark_df_as_parquet(self, spark_df, abfss_path, mode="overwrite"):
+        """
+        Guarda un Spark DataFrame en Azure Data Lake en formato Parquet.
+        Ejemplo de abfss_path: 'abfss://scraps@scrapingiastorage.dfs.core.windows.net/clean/'
+        """
+        spark_df.write.mode(mode).parquet(abfss_path)
