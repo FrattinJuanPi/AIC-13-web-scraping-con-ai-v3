@@ -66,7 +66,7 @@ def download_htmls(urls, tiempo_espera=5):
             dominio = url.split("//")[-1].split("/")[0].replace("www.", "")
             html_dict[dominio] = html_completo
 
-            driver.save_screenshot(f"screenshot_{dominio}.png")
+            driver.save_screenshot(f"src/screen/screenshot_{dominio}.png")
             driver.quit()
 
         except Exception as e:

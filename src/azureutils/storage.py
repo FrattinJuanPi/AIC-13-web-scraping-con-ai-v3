@@ -1,5 +1,4 @@
 from azure.storage.filedatalake import DataLakeServiceClient
-import os
 
 class AzureStorage:
     def __init__(self, account_name, account_key):
@@ -31,8 +30,9 @@ class AzureStorage:
 
         with open(download_path, "wb") as download_file:
             download_file.write(file_client.download_file().readall())
-    
-    def save_json_to_abfss(cls, abfss_path, json_data, overwrite=True):
+            
+    @staticmethod
+    def save_json_to_abfss(abfss_path, json_data, overwrite=True):
         """
         Guarda un string JSON en Azure Data Lake usando dbutils.fs.put.
         """

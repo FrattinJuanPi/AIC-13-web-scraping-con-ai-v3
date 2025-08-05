@@ -81,9 +81,10 @@ def limpiar_titulares(df):
     y filtra las filas donde la URL tiene más de 2 palabras separadas por guiones.
     """
     import re
-
-    df['source'] = df['source'].apply(lambda x: re.sub(r'\.com|\.ar|\.br|\.co|\.pe|\.cl|\.mx', '', x))
-    df['source'] = df['source'].apply(lambda x: re.sub(r'_bloque\d+$', '', x))
-    df['palabras_en_url'] = df['url'].str.count('-')
-    df = df[df['palabras_en_url'] > 2]
+    # breakpoint()
+    if df.empty:  
+        df['source'] = df['source'].apply(lambda x: re.sub(r'\.com|\.ar|\.br|\.co|\.pe|\.cl|\.mx', '', x))
+        df['source'] = df['source'].apply(lambda x: re.sub(r'_bloque\d+$', '', x))
+        df['palabras_en_url'] = df['url'].str.count('-')
+        df = df[df['palabras_en_url'] > 2]
     return df

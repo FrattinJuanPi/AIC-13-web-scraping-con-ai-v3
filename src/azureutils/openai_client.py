@@ -4,6 +4,7 @@ import re
 import json
 from datetime import datetime
 import pandas as pd
+from config import DEPLOYMENT
 
 
 class OpenAIClient:
@@ -19,7 +20,7 @@ class OpenAIClient:
         for attempt in range(max_retries):
             try:
                 response = self.client.chat.completions.create(
-                    model=self.model_name,
+                    model= DEPLOYMENT,
                     messages=[{"role": "user", "content": prompt}]
                 )
                 return response.choices[0].message.content
@@ -50,7 +51,7 @@ class OpenAIClient:
                 )
 
                 response = self.client.chat.completions.create(
-                    model=self.model_name,
+                    model=DEPLOYMENT,
                     messages=[{"role": "user", "content": prompt}]
                 )
 
