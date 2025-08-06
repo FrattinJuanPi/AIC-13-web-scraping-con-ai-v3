@@ -52,11 +52,15 @@ Este proyecto implementa un enfoque mixto que:
 pip install -r requirements.txt
 ```
 ### 2. Configurar credenciales
+Crear un archivo .env con las siguientes variables:
 
-```AZURE_API_KEY=tu_api_key
-AZURE_ENDPOINT=https://tu-endpoint.openai.azure.com/
-DEPLOYMENT_NAME=nombre-de-tu-deployment
-API_VERSION=2024-12-01-preview
+```STORAGE_ACCOUNT_NAME = ""
+STORAGE_ACCOUNT_KEY = ""
+AZURE_ENDPOINT = ""
+AZURE_API_KEY = ""
+AZURE_API_VERSION =  ""
+IA_MODEL_NAME = ""
+DEPLOYMENT = ""
 ```
 
 ### 3. Ejecutar el scraper
