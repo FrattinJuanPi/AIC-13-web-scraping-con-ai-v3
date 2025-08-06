@@ -4,6 +4,8 @@ env/
 .python_env/
 .env
 
-src/screen/
-
 01_Scraper_conIA_AZURE.py
+
+src/data/raw/
+src/data/clean/
+src/data/screen/
